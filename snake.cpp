@@ -66,11 +66,11 @@ void Snake::Run() {
 }
 
 
-void MoveSnake(int xpos, int ypos, vector<pair<int, int>>& snakebody) {
+void Snake::MoveSnake(int xpos, int ypos, vector<pair<int, int>>& snakebody) {
 	int oldposx;
 	int oldposy;
 	int head = 0;
-	for (int i = snakebody.size() - 1; i >= 0; --i) {
+	for (int i = 0; i < snakebody.size(); ++i) {
 		if (snakebody[head]) {
 			oldposx = snakebody[head].first;
 			oldposy = snakebody[head].second;
@@ -80,12 +80,9 @@ void MoveSnake(int xpos, int ypos, vector<pair<int, int>>& snakebody) {
 		else {
 			snakebody[i].first = oldposx;
 			snakebody[i].second = oldposy;
-			newposx = 
+			oldposx = snakebody[i + 1].first;
+			oldposy = snakebody[i + 1].second;
 		}
-		oldposx = snakebody[i].first;
-		oldposy = snakebody[i].second;
-		snakebody[i].first = headposx;
-		snakebody[i].second = headposy;
 	}
 }
 
@@ -116,7 +113,7 @@ void Snake::TakeInput(int& snakelength) {
 					case SDLK_s:
 						headposy -= headposvely;
 						break;
-				}
+			}
 		}
 
 	}
