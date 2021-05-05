@@ -8,11 +8,11 @@ using namespace std;
 
 class Snake {
 	public:
+		//add accessor methods for all of the stuff from the functions;
 		void MoveSnake(int xpos, int ypos, vector<pair<int, int>>& snakebody);
-		bool InputCollision(int xpos, int ypos);
+		bool Snake::InputCollision(Food& foodgen);
 		bool TakeInput(int& snakelength);
 		bool RenderGrid(int xpos, int ypos, vector<pair<int, int>>& snakebody);
-		void FoodGenerator(vector<pair<int, int>>& snakebody, bool clearfood);
 		void PrintSnake(vector<pair<int, int>>& snakebody);
 		void Run();
 	private:
@@ -21,7 +21,6 @@ class Snake {
 		int headposx;
 		int headposy;
 		int foodcount = 0;
-		int oldheadposx;
 		int oldheadposy;
 		int headposvelx = 3;
 		int headposvely = 3;
@@ -34,11 +33,30 @@ class Snake {
 };
 
 
-bool InputCollision() {
+class Food {
+	public:
+		//Add constructor;
+		void FoodGenerator(Snake& thesnake, bool clearfood);
+		Food() = delete;
+		//Deletes default constructor;
+		//Use copy constryctir to retrieve the data
+	private:
+		int tfoodposx;
+		int tfoodposy;
+		int foodwidth;
+		int foodheight;
+};
+
+
+bool Snake::InputCollision(Food& foodgen) {
 	if (foodposx == headposx && foodposy == headposy) {
-		snakebody.push_back(make_pair(snakebody[i].first , ));
+		snakebody.push_back(make_pair(snakebody[snakebody.size() - 1].first , snakebody[snakebody.size() - 1].second );
 
 
+
+
+	}
+	else if () {
 
 	}
 	else if ((headposx <= 0 || headposx >= width) || (headposy <= 0 || headposy >= length) {
@@ -58,7 +76,7 @@ bool InputCollision() {
 }
 
 
-void FoodGenerator(vector<pair<int, int>>& snakebody, bool clearfood) {
+void Food::FoodGenerator(Snake& thesnake, bool clearfood) {
 	SDL_Rect food;
 	int foodposx;
 	int foodposy;
@@ -184,10 +202,10 @@ void Snake::TakeInput(int& snakelength) {
 					headposx -= headposvelx;
 					break;
 				case SDLK_w:
-					headposy += headposvely;
+					headposy -= headposvely;
 					break;
 				case SDLK_s:
-					headposy -= headposvely;
+					headposy += headposvely;
 					break;
 				}
 			}
