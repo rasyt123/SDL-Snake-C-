@@ -20,6 +20,10 @@ class Snake {
 		int length = snakebody.size();
 		int headposx;
 		int headposy;
+		int headpostopright;
+		int headpostopleft;
+		int headpostbottomleft;
+		int headpostbottomright;
 		int foodcount = 0;
 		int oldheadposy;
 		int headposvelx = 3;
@@ -37,6 +41,8 @@ class Food {
 	public:
 		//Add constructor;
 		void FoodGenerator(Snake& thesnake, bool clearfood);
+		void SnakeGrowth(Snake& thesnake);
+		void 
 		Food() = delete;
 		//Deletes default constructor;
 		//Use copy constryctir to retrieve the data
@@ -48,15 +54,23 @@ class Food {
 };
 
 
+void Food::SnakeGrowth(Snake& thesnake) {
+
+
+}
+
+
 bool Snake::InputCollision(Food& foodgen) {
-	if (foodposx == headposx && foodposy == headposy) {
-		snakebody.push_back(make_pair(snakebody[snakebody.size() - 1].first , snakebody[snakebody.size() - 1].second );
 
+	int foodtoprightcordy = foodgen.tfoodposy;
+	int bottomleftcordx = foodgen.tfoodposx;
+	int bottomleftcordy = foodgen.tfoodposy - foodgen.height;
+	int bottomrightcordx = foodgen.tfoodposx + foodgen.foodwith;
 
-
-
+	if ((headposx > foodgen.tfoodposx && headposx < bottomrightcordx) && headposy > bottomleftcordy && headposy < foodtoprightcordy) {
+		--foodgen.foodcount;
 	}
-	else if () {
+	else if (foodposx == headposx && foodposy == headposy) {
 
 	}
 	else if ((headposx <= 0 || headposx >= width) || (headposy <= 0 || headposy >= length) {
