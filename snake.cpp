@@ -23,11 +23,13 @@ class Snake {
 		bool TakeInput(int& snakelength);
 		bool RenderGridHead(vector<pair<int, int>>& snakebody);
 		void PrintSnake(vector<pair<int, int>>& snakebody);
+		void Update();
 		void Run();
 	private:
 		class Head;
 		vector <pair<int, int>> snakebody;
 		int length = snakebody.size();
+		int direction;
 		int headposx;
 		int headposy;
 		int foodcount = 0;
@@ -45,6 +47,7 @@ class Food {
 		void FoodGenerator(Snake& thesnake, bool clearfood);
 		Food() = delete;
 	private:
+		int foodcount;
 		int tfoodposx;
 		int tfoodposy;
 		int foodwidth;
@@ -116,7 +119,7 @@ Head::Head(int headposvelx, int headposvely, int headposx, int headposy,) {
 
 
 void Snake::SnakeGrowth(int direction) {
-	
+
 	
 
 
@@ -124,15 +127,27 @@ void Snake::SnakeGrowth(int direction) {
 
 bool Snake::TouchingFood(Food& foodgen, Head& head) const {
 	if ((headposx > foodgen.tfoodposx && headposx < bottomrightcordx) && (headposy > bottomleftcordy && headposy < foodtoprightcordy)) {
+		Head.headposvelx *= 2;
+		Head.headposvely *= 2;
+		--foodgen.foodcount;
 		return true;
 	}
-	else if ((head.toprx > foodgen.tfoodposx && head.toprx < bottomrightcordx) && (head.topry > bottomleftcordy && head.topry < foodtoprightcordy)) {
+	else if ((head.toprxretrieve() > foodgen.tfoodposx && head.toprxretrieve() < bottomrightcordx) && (head.topryretrieve() > bottomleftcordy && head.topryretrieve() < foodtoprightcordy)) {
+		Head.headposvelx *= 2;
+		Head.headposvely *= 2;
+		--foodgen.foodcount;
 		return true;
 	}
-	else if ((head.toprx > foodgen.tfoodposx && head.toprx < bottomrightcordx) && (head.topry > bottomleftcordy && head.topry < foodtoprightcordy)) {
+	else if ((head.bottomlxretrieve() > foodgen.tfoodposx && head.bottomlxretrieve() < bottomrightcordx) && (head.bottomlyretrieve() > bottomleftcordy && head.bottomlyretrieve()< foodtoprightcordy)) {
+		Head.headposvelx *= 2;
+		Head.headposvely *= 2;
+		--foodgen.foodcount;
 		return true;
 	}
-	else if ((head.toprx > foodgen.tfoodposx && head.toprx < bottomrightcordx) && (head.topry > bottomleftcordy && head.topry < foodtoprightcordy)) {
+	else if ((head.bottomrx > foodgen.tfoodposx && head.bottomrx < bottomrightcordx) && (head.bottomry > bottomleftcordy && head.bottomry < foodtoprightcordy)) {
+		Head.headposvelx *= 2;
+		Head.headposvely *= 2;
+		--foodgen.foodcount;
 		return true;
 	}
 	return false;
@@ -161,7 +176,6 @@ bool Snake::InputCollision(Food& foodgen, Head& head) {
 				return true;
 			}
 		}
-		return false;
 	}
 
 	return false;
@@ -257,16 +271,27 @@ void Snake::MoveSnake(int xpos, int ypos, vector<pair<int, int>>& snakebody) {
 	}
 }
 
-void Snake::PrintSnake(vector<pair<int, int>>& snakebody, SDL_Rect *) {
-	SDL_RenderClear(renderer);
-	int x;
-	int y;
-	for (int i = 0; i < snakebody.size(); i++) {
-		x = snakebody.first;
-		y = snakebody.second;
+void Snake::PrintSnake(vector<pair<int, int>>& snakebody) {
 
+
+
+}
+
+void Snake::Update() {
+	switch (this->direction) {
+		case RIGHT:
+			headposx += headposvelx;
+			break;
+		case LEFT:
+			headposx -= headposvelx;
+			break;
+		case UP:
+			headposy -= headposvely;
+			break;
+		case DOWN:
+			headposy += headposvely;
+			break;
 	}
-
 
 }
 
@@ -274,38 +299,34 @@ void Snake::PrintSnake(vector<pair<int, int>>& snakebody, SDL_Rect *) {
 
 
 
-
-
 void Snake::TakeInput(int& snakelength) {
-	
 	SDL_Event event;
 	int oldposx;
 	int oldposy;
-	for (int i = 0; i < snakelength; i++) {
-		headposvelx += 2;
-		headposvely += 2;
-	}
 	while (SDL_PollEvent(&event)) {
 		if (SDL_PollEvent(&event)) {
 			switch (event.type) {
 			case SDL_KEYDOWN:
 				switch (event.key.keysm.sym) {
 				case SDLK_a:
-					headposx -= headposvelx;
+					this->direction = LEFT;
 					break;
 				case SDLK_d:
-					headposx += headposvelx;
+					this->direction = RIGHT;
 					break;
 				case SDLK_w:
-					headposy -= headposvely;
+					this->direction = UP;
 					break;
 				case SDLK_s:
-					headposy += headposvely;
+					this->direction = DOWN;
 					break;
 				}
 			}
 		}
+
 	}
+
+
 }
 
 int main(int argc, char* argv[])
