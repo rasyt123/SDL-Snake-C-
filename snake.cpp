@@ -9,6 +9,8 @@ class Snake;
 class Food;
 class Head;
 
+enum {LEFT, RIGHT, UP, DOWN};
+
 
 
 class Snake {
@@ -100,7 +102,7 @@ int Head::bottomryretrieve() {
 
 
 
-Head::Head(int headposvelx, int headposvely, int headposx, int headposy) {
+Head::Head(int headposvelx, int headposvely, int headposx, int headposy,) {
 	this->headposvelx = headposvelx;
 	this->headposvely = headposvely;
 	this->toprx = headposx + 10;
@@ -113,7 +115,9 @@ Head::Head(int headposvelx, int headposvely, int headposx, int headposy) {
 }
 
 
-void Food::SnakeGrowth(Snake& thesnake) {
+void Snake::SnakeGrowth(int direction) {
+	
+	
 
 
 }
@@ -129,7 +133,7 @@ bool Snake::TouchingFood(Food& foodgen, Head& head) const {
 		return true;
 	}
 	else if ((head.toprx > foodgen.tfoodposx && head.toprx < bottomrightcordx) && (head.topry > bottomleftcordy && head.topry < foodtoprightcordy)) {
-		SnakeGrowth(Snake & thesnake);
+		return true;
 	}
 	return false;
 
@@ -144,11 +148,10 @@ bool Snake::InputCollision(Food& foodgen, Head& head) {
 	int bottomleftcordy = foodgen.tfoodposy - foodgen.height;
 	int bottomrightcordx = foodgen.tfoodposx + foodgen.foodwith;
 
-	if (TouchingFood()) {
-		SnakeGrowth
+	if (TouchingFood(foodgen, head)) {
+		SnakeGrowth();
 		return true;
 	}
-
 	if ((headposx <= 0 || headposx >= width) || (headposy <= 0 || headposy >= length) {
 		return true;
 	}
@@ -274,6 +277,7 @@ void Snake::PrintSnake(vector<pair<int, int>>& snakebody, SDL_Rect *) {
 
 
 void Snake::TakeInput(int& snakelength) {
+	
 	SDL_Event event;
 	int oldposx;
 	int oldposy;
@@ -287,10 +291,10 @@ void Snake::TakeInput(int& snakelength) {
 			case SDL_KEYDOWN:
 				switch (event.key.keysm.sym) {
 				case SDLK_a:
-					headposx += headposvelx;
+					headposx -= headposvelx;
 					break;
 				case SDLK_d:
-					headposx -= headposvelx;
+					headposx += headposvelx;
 					break;
 				case SDLK_w:
 					headposy -= headposvely;
