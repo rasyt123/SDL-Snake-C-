@@ -5,6 +5,11 @@
 #include <time.h>
 #include <math.h>
 using namespace std;
+class Snake;
+class Food;
+class Head;
+
+
 
 class Snake {
 	public:
@@ -12,22 +17,16 @@ class Snake {
 		void MoveSnake(int xpos, int ypos, vector<pair<int, int>>& snakebody);
 		bool Snake::InputCollision(Food& foodgen);
 		bool TakeInput(int& snakelength);
-		bool RenderGrid(int xpos, int ypos, vector<pair<int, int>>& snakebody);
+		bool Snake::RenderGridHead(vector<pair<int, int>>& snakebody);
 		void PrintSnake(vector<pair<int, int>>& snakebody);
 		void Run();
 	private:
+		class Head;
 		vector <pair<int, int>> snakebody;
 		int length = snakebody.size();
 		int headposx;
 		int headposy;
-		int headpostopright;
-		int headpostopleft;
-		int headpostbottomleft;
-		int headpostbottomright;
 		int foodcount = 0;
-		int oldheadposy;
-		int headposvelx = 3;
-		int headposvely = 3;
 		int width = 800;
 		int height = 600;
 		SDL_Window* gWindow = NULL;
@@ -39,19 +38,43 @@ class Snake {
 
 class Food {
 	public:
-		//Add constructor;
 		void FoodGenerator(Snake& thesnake, bool clearfood);
-		void SnakeGrowth(Snake& thesnake);
-		void 
+		void SnakeGrowth(Snake& thesnake); 
 		Food() = delete;
-		//Deletes default constructor;
-		//Use copy constryctir to retrieve the data
 	private:
 		int tfoodposx;
 		int tfoodposy;
 		int foodwidth;
 		int foodheight;
 };
+
+class Head {
+	public:
+		explicit Head(int headposvelx, int headposvely, int headposx, int headposy);
+		Head() = delete;
+    private:
+		int headposvelx;
+		int headposvely;
+		int toprx;
+		int topry;
+		int bottomlx;
+		int bottomly;
+		int bottomrx;
+		int bottomry;
+};
+
+
+Head::Head(int headposvelx, int headposvely, int headposx, int headposy) {
+	this->headposvelx = headposvelx;
+	this->headposvely = headposvely;
+	this->toprx = headposx + 10;
+	this->topry = headposy;
+	this->bottomlx = headposx;
+	this->bottomly = headposy + 10;
+	this->bottomrx = headposx + 10;
+	this->bottomry = headposy + 10;
+	
+}
 
 
 void Food::SnakeGrowth(Snake& thesnake) {
@@ -67,10 +90,16 @@ bool Snake::InputCollision(Food& foodgen) {
 	int bottomleftcordy = foodgen.tfoodposy - foodgen.height;
 	int bottomrightcordx = foodgen.tfoodposx + foodgen.foodwith;
 
-	if ((headposx > foodgen.tfoodposx && headposx < bottomrightcordx) && headposy > bottomleftcordy && headposy < foodtoprightcordy) {
-		--foodgen.foodcount;
+	if ((headposx > foodgen.tfoodposx && headposx < bottomrightcordx) && (headposy > bottomleftcordy && headposy < foodtoprightcordy)) {
+		
 	}
-	else if (foodposx == headposx && foodposy == headposy) {
+	else if ((Head.toprx > foodgen.tfoodposx && Head.toprx < bottomrightcordx) && (Head.topry > bottomleftcordy && Head.topry < foodtoprightcordy)) {
+
+	}
+	else if () {
+
+	}
+	else if () {
 
 	}
 	else if ((headposx <= 0 || headposx >= width) || (headposy <= 0 || headposy >= length) {
@@ -113,7 +142,7 @@ void Food::FoodGenerator(Snake& thesnake, bool clearfood) {
 
 }
 
-bool Snake::RenderGrid(vector<pair<int, int>>& snakebody) {
+bool Snake::RenderGridHead(vector<pair<int, int>>& snakebody) {
 	bool success = true;
 	SDL_Rect snakehead;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
