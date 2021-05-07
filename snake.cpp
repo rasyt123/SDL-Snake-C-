@@ -15,9 +15,11 @@ class Snake {
 	public:
 		//add accessor methods for all of the stuff from the functions;
 		void MoveSnake(int xpos, int ypos, vector<pair<int, int>>& snakebody);
-		bool Snake::InputCollision(Food& foodgen);
+		void SnakeGrowth(Snake& thesnake);
+		bool InputCollision(Food& foodgen);
+		bool TouchingFood(Food& foodgen, Head& head);
 		bool TakeInput(int& snakelength);
-		bool Snake::RenderGridHead(vector<pair<int, int>>& snakebody);
+		bool RenderGridHead(vector<pair<int, int>>& snakebody);
 		void PrintSnake(vector<pair<int, int>>& snakebody);
 		void Run();
 	private:
@@ -39,7 +41,6 @@ class Snake {
 class Food {
 	public:
 		void FoodGenerator(Snake& thesnake, bool clearfood);
-		void SnakeGrowth(Snake& thesnake); 
 		Food() = delete;
 	private:
 		int tfoodposx;
@@ -51,6 +52,13 @@ class Food {
 class Head {
 	public:
 		explicit Head(int headposvelx, int headposvely, int headposx, int headposy);
+		int toprxretrieve();
+		int topryretrieve();
+		int bottomlxretrieve();
+		int bottomlyretrieve();
+		int bottomrxretrieve();
+		int bottomryretrieve();
+	
 		Head() = delete;
     private:
 		int headposvelx;
@@ -62,6 +70,34 @@ class Head {
 		int bottomrx;
 		int bottomry;
 };
+
+int Head::toprxretrieve() {
+	return toprx;
+}
+
+int Head::topryretrieve() {
+	return topry;
+}
+
+int Head::bottomlxretrieve() {
+	return bottomlx;
+}
+
+int Head:: bottomlyretrieve() {
+	return bottomly;
+
+}
+
+int Head::bottomrxretrieve() {
+	return bottomrx;
+}
+
+int Head::bottomryretrieve() {
+	return bottomry;
+}
+
+
+
 
 
 Head::Head(int headposvelx, int headposvely, int headposx, int headposy) {
@@ -82,27 +118,38 @@ void Food::SnakeGrowth(Snake& thesnake) {
 
 }
 
+bool Snake::TouchingFood(Food& foodgen, Head& head) const {
+	if ((headposx > foodgen.tfoodposx && headposx < bottomrightcordx) && (headposy > bottomleftcordy && headposy < foodtoprightcordy)) {
+		return true;
+	}
+	else if ((head.toprx > foodgen.tfoodposx && head.toprx < bottomrightcordx) && (head.topry > bottomleftcordy && head.topry < foodtoprightcordy)) {
+		return true;
+	}
+	else if ((head.toprx > foodgen.tfoodposx && head.toprx < bottomrightcordx) && (head.topry > bottomleftcordy && head.topry < foodtoprightcordy)) {
+		return true;
+	}
+	else if ((head.toprx > foodgen.tfoodposx && head.toprx < bottomrightcordx) && (head.topry > bottomleftcordy && head.topry < foodtoprightcordy)) {
+		SnakeGrowth(Snake & thesnake);
+	}
+	return false;
 
-bool Snake::InputCollision(Food& foodgen) {
+}
+
+
+
+bool Snake::InputCollision(Food& foodgen, Head& head) {
 
 	int foodtoprightcordy = foodgen.tfoodposy;
 	int bottomleftcordx = foodgen.tfoodposx;
 	int bottomleftcordy = foodgen.tfoodposy - foodgen.height;
 	int bottomrightcordx = foodgen.tfoodposx + foodgen.foodwith;
 
-	if ((headposx > foodgen.tfoodposx && headposx < bottomrightcordx) && (headposy > bottomleftcordy && headposy < foodtoprightcordy)) {
-		
+	if (TouchingFood()) {
+		SnakeGrowth
+		return true;
 	}
-	else if ((Head.toprx > foodgen.tfoodposx && Head.toprx < bottomrightcordx) && (Head.topry > bottomleftcordy && Head.topry < foodtoprightcordy)) {
 
-	}
-	else if () {
-
-	}
-	else if () {
-
-	}
-	else if ((headposx <= 0 || headposx >= width) || (headposy <= 0 || headposy >= length) {
+	if ((headposx <= 0 || headposx >= width) || (headposy <= 0 || headposy >= length) {
 		return true;
 	}
 	else {
@@ -114,6 +161,7 @@ bool Snake::InputCollision(Food& foodgen) {
 		return false;
 	}
 
+	return false;
 
 
 }
